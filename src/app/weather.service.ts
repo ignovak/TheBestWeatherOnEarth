@@ -11,7 +11,7 @@ export class WeatherService {
 
   public getData(): Observable<any> {
     // https://openweathermap.org/current
-    const url = 'https://api.openweathermap.org/data/2.5/box/city?bbox=12,32,15,37,10&appid=4ee3ac3ce2b2461555028c24473caa74';
+    const url = 'https://api.openweathermap.org/data/2.5/box/city?bbox=85,-180,-85,185,10&appid=4ee3ac3ce2b2461555028c24473caa74';
 
     return this.http.get(url);
   }
