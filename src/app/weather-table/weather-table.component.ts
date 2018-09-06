@@ -10,22 +10,29 @@ import { WeatherService } from '../weather.service';
     </div>
 
     <div *ngIf="!isLoading">
-      <div *ngFor="let item of data" class="card">
-        <div class="card-header">{{item.name}}</div>
-        <div class="card-body">
-          <h5 class="card-title">{{item.weather[0].main}}</h5>
-          <h6 class="card-subtitle mb-2 text-muted">{{item.weather[0].description}}</h6>
-          <img [src]="'https://openweathermap.org/img/w/' + item.weather[0].icon + '.png'" />
-          <h6>Temperature: {{item.main.temp}}°C</h6>
-          <h6>Humidity: {{item.main.humidity}}%</h6>
-          <p class="card-text">
-              {{item.data}}
-          </p>
+      <div *ngFor="let item of data; index as i">
+        <h2 *ngIf="i == 0" class="mt-3 text-center">The optimal location</h2>
+        <h2 *ngIf="i == 1" class="mt-3 text-center">Other locations</h2>
+        <div class="card">
+          <div class="card-header">{{item.name}}</div>
+          <div class="card-body">
+            <div class="media">
+              <div class="pr-5">
+                <h5 class="card-title">{{item.weather[0].main}}</h5>
+                <h6 class="card-subtitle mb-2 text-muted">{{item.weather[0].description}}</h6>
+                <img [src]="'https://openweathermap.org/img/w/' + item.weather[0].icon + '.png'" />
+              </div>
+              <div class="card-text media-body">
+                <h6>Temperature: {{item.main.temp}}°C</h6>
+                <h6>Humidity: {{item.main.humidity}}%</h6>
+                <h6>Wind speed: {{item.wind.speed}}%</h6>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </div>
-  `,
-  styles: []
+  `
 })
 export class WeatherTableComponent implements OnChanges, OnInit {
   data = [];
@@ -53,8 +60,7 @@ export class WeatherTableComponent implements OnChanges, OnInit {
       .slice(0, this.MAX_RESULTS_NUM)
       .sort((a, b) => {
         return Math.abs(a.main.humidity - this.OPTIMAL_HUMIDITY) - Math.abs(b.main.humidity - this.OPTIMAL_HUMIDITY);
-      })
-      .map(_ => ({ ..._, data: JSON.stringify(_)}));
+      });
   }
 
   ngOnInit() {

@@ -4,8 +4,8 @@ import { Component } from '@angular/core';
   selector: 'app-root',
   template: `
     <div class="container">
-      <h1 class="text-center">
-        Welcome to {{title}}!
+      <h1 class="mb-4 text-center">
+        Find {{title}} Location
       </h1>
 
       <div *ngFor="let entry of genderEntries" class="form-check">
