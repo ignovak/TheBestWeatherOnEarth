@@ -11,8 +11,11 @@ export class WeatherService {
 
   public getData(): Observable<any> {
     // https://openweathermap.org/current
-    const url = 'https://api.openweathermap.org/data/2.5/box/city?bbox=85,-180,-85,185,10&appid=4ee3ac3ce2b2461555028c24473caa74';
-
+    const host = 'https://api.openweathermap.org';
+    const path = '/data/2.5/box/city';
+    const bbox = '-180,-90,180,90,8'; // [lon-left,lat-bottom,lon-right,lat-top,zoom]
+    const apiKey = '4ee3ac3ce2b2461555028c24473caa74';
+    const url = host + path + '?bbox=' + bbox + '&appid=' + apiKey;
     return this.http.get(url);
   }
 }

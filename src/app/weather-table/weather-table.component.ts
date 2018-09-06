@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { WeatherService } from '../weather.service';
 
 @Component({
@@ -26,8 +26,11 @@ import { WeatherService } from '../weather.service';
   styles: []
 })
 export class WeatherTableComponent implements OnInit {
-  private data = [];
-  private isLoading = false;
+  @Input() gender: string;
+
+  data = [];
+  isLoading = false;
+
   private MAX_RESULTS_NUM = 50;
   private PIVOT_TEMP = 21;
   private PIVOT_HUMIDITY = 50;
