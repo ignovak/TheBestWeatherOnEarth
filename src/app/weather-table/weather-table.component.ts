@@ -4,8 +4,10 @@ import { WeatherService } from '../weather.service';
 @Component({
   selector: 'app-weather-table',
   template: `
-    <ngb-progressbar *ngIf="isLoading" type="info" [striped]="true">
-    </ngb-progressbar>
+
+    <div *ngIf="isLoading" class="progress mt-5">
+      <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" style="width: 100%"></div>
+    </div>
 
     <div *ngIf="!isLoading">
       <div *ngFor="let item of data" class="card">
@@ -14,8 +16,8 @@ import { WeatherService } from '../weather.service';
           <h5 class="card-title">{{item.weather[0].main}}</h5>
           <h6 class="card-subtitle mb-2 text-muted">{{item.weather[0].description}}</h6>
           <img [src]="'https://openweathermap.org/img/w/' + item.weather[0].icon + '.png'" />
-          <h6>Temperature: {{item.main.temp}}</h6>
-          <h6>Humidity: {{item.main.humidity}}</h6>
+          <h6>Temperature: {{item.main.temp}}°C</h6>
+          <h6>Humidity: {{item.main.humidity}}%</h6>
           <p class="card-text">
               {{item.data}}
           </p>
