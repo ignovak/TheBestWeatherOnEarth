@@ -23,7 +23,7 @@ import { Component } from '@angular/core';
         </label>
       </div>
 
-      <app-weather-table [gender]="gender"></app-weather-table>
+      <app-weather-table [optimalTemperature]="optimalTemperature"></app-weather-table>
 
     </div>
   `,
@@ -42,10 +42,15 @@ export class AppComponent {
       label: 'I\'m a woman (the ideal temperature is 22°C)'
     }
   ];
-  gender = 'male';
   title = 'TheBestWeatherOnEarth';
+  gender = 'male';
+  optimalTemperature = 21;
 
   onGenderChange(gender) {
     this.gender = gender;
+    this.optimalTemperature = {
+      male: 21,
+      female: 22
+    }[gender];
   }
 }

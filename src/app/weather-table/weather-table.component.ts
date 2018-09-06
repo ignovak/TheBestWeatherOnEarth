@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
 import { WeatherService } from '../weather.service';
 
 @Component({
@@ -25,27 +25,32 @@ import { WeatherService } from '../weather.service';
   `,
   styles: []
 })
-export class WeatherTableComponent implements OnInit {
-  @Input() gender: string;
-
+export class WeatherTableComponent implements OnChanges, OnInit {
   data = [];
   isLoading = false;
 
+  private weatherData = [];
   private MAX_RESULTS_NUM = 50;
-  private PIVOT_TEMP = 21;
-  private PIVOT_HUMIDITY = 50;
+  private OPTIMAL_HUMIDITY = 50;
+
+  @Input() optimalTemperature: number;
+
+  ngOnChanges(changes: SimpleChanges) {
+    if (!changes.optimalTemperature.isFirstChange()) {
+      this.updateData();
+    }
+  }
 
   constructor(private weatherService: WeatherService) { }
 
-  updateData(data) {
-    const cities = data.list;
-    cities.sort((a, b) => {
-      return Math.abs(a.main.temp - this.PIVOT_TEMP) - Math.abs(b.main.temp - this.PIVOT_TEMP);
+  updateData() {
+    this.weatherData.sort((a, b) => {
+      return Math.abs(a.main.temp - this.optimalTemperature) - Math.abs(b.main.temp - this.optimalTemperature);
     });
-    this.data = cities
+    this.data = this.weatherData
       .slice(0, this.MAX_RESULTS_NUM)
       .sort((a, b) => {
-        return Math.abs(a.main.humidity - this.PIVOT_HUMIDITY) - Math.abs(b.main.humidity - this.PIVOT_HUMIDITY);
+        return Math.abs(a.main.humidity - this.OPTIMAL_HUMIDITY) - Math.abs(b.main.humidity - this.OPTIMAL_HUMIDITY);
       })
       .map(_ => ({ ..._, data: JSON.stringify(_)}));
   }
@@ -53,7 +58,8 @@ export class WeatherTableComponent implements OnInit {
   ngOnInit() {
     this.isLoading = true;
     this.weatherService.getData().subscribe(data => {
-      this.updateData(data);
+      this.weatherData = data.list;
+      this.updateData();
       this.isLoading = false;
     });
   }
